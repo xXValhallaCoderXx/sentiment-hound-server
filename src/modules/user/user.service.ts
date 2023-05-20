@@ -7,7 +7,7 @@ import { Prisma } from '@prisma/client';
 import { RecordNotFound } from 'src/exceptions/api-exceptions';
 
 @Injectable()
-export class UsersService {
+export class UserService {
     constructor(private prisma: PrismaService) { }
 
     async findByEmail(email: string): Promise<User | undefined> {

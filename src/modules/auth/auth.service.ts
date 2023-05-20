@@ -3,7 +3,7 @@ import {
     Injectable, UnauthorizedException, HttpException, HttpStatus,
     BadRequestException
 } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PostgresErrorCode } from 'src/exceptions/db-exceptions';
@@ -12,13 +12,13 @@ import { InvalidCredentials } from 'src/exceptions/api-exceptions';
 
 @Injectable()
 export class AuthService {
-    constructor(private configService: ConfigService, private usersService: UsersService, private jwtService: JwtService) { }
+    constructor(private configService: ConfigService, private userService: UserService, private jwtService: JwtService) { }
 
     async signIn(user): Promise<any> {
         const { id, email } = user;
         const { accessToken, refreshToken } = await this.getTokens(id, email);
 
-        await this.usersService.updateRefreshToken({
+        await this.userService.updateRefreshToken({
             userId: id,
             plainToken: refreshToken,
         });
@@ -27,7 +27,7 @@ export class AuthService {
 
 
     async registerUser(email: string, password: string): Promise<any> {
-        const user = await this.usersService.findByEmail(email);
+        const user = await this.userService.findByEmail(email);
         if (user) {
             throw new UnauthorizedException();
         }
@@ -43,13 +43,13 @@ export class AuthService {
         const hashedPassword = await this.hashSecret(data.password);
 
         try {
-            const newUser = await this.usersService.createUser({
+            const newUser = await this.userService.createUser({
                 ...data,
                 password: hashedPassword,
             });
 
             const newTokens = await this.getTokens(newUser.id, newUser.email);
-            await this.usersService.updateRefreshToken({
+            await this.userService.updateRefreshToken({
                 userId: newUser.id,
                 plainToken: newTokens.refreshToken,
             });
@@ -120,7 +120,7 @@ export class AuthService {
 
     async validateUser(email: string, pass: string): Promise<any> {
         try {
-            const user = await this.usersService.findByEmail(email);
+            const user = await this.userService.findByEmail(email);
             await this.verifySecret({
                 hashed: user.password,
                 plain: pass,
