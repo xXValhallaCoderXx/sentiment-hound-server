@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Post, Get, UseGuards, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from 'src/guards/local.auth.guard';
 
@@ -10,6 +10,12 @@ export class AuthController {
     @Post('login')
     signIn(@Request() req) {
         return this.authService.signIn(req.user);
+    }
+
+    @UseGuards(LocalAuthGuard)
+    @Get('authenticated')
+    isAuthenticated(@Request() req) {
+        return true
     }
 
     @Post('register')

@@ -76,17 +76,17 @@
 //   @Get()
 //   async getHello(): Promise<string> {
 
-//     const res = await fetch("http://localhost:8000/analyze/tweet", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         "input_text": "I really liek cheese"
-//       })
-//     })
-//     const response = await res.json()
-//     console.log("RESPONSER: ", response)
+// const res = await fetch("http://localhost:8000/analyze/tweet", {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify({
+//     "input_text": "I really liek cheese"
+//   })
+// })
+// const response = await res.json()
+// console.log("RESPONSER: ", response)
 //     return this.appService.getHello();
 //   }
 

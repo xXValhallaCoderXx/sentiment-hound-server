@@ -1,9 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
-import { Prisma } from '@prisma/client';
-
-import { RecordNotFound } from 'src/exceptions/api-exceptions';
 
 @Injectable()
 export class SentimentService {
@@ -11,14 +7,13 @@ export class SentimentService {
 
 
     async analyzeText(data: string) {
-        console.log("DATA: ", data)
-        const res = await fetch("http://localhost:8000/analyze/tweet", {
+        const res = await fetch("http://localhost:8000/analyze/tweet-bulk", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                "input_text": data
+                "data": data
             })
         })
         const response = await res.json()
