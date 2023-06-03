@@ -29,7 +29,7 @@ export class TwitterService {
         // const conversationId = response.data[0].conversation_id;
 
         const conversationData = await fetch(
-            `https://api.twitter.com/2/tweets/search/recent?query=conversation_id:${tweetId}&tweet.fields=in_reply_to_user_id,author_id,created_at,conversation_id`,
+            `https://api.twitter.com/2/tweets/search/recent?query=conversation_id=${tweetId}&tweet.fields=in_reply_to_user_id,author_id,created_at,conversation_id`,
             {
                 headers: {
                     authorization: `Bearer ${this.configService.get<string>(

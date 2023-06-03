@@ -6,7 +6,7 @@ import { JwtAuthGuard } from 'src/guards/jwt.auth.guard';
 export class TwitterController {
     constructor(private twitterService: TwitterService) { }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Post('analyze')
     async register(@Body() body) {
         return this.twitterService.getTweetReplies(body.data);

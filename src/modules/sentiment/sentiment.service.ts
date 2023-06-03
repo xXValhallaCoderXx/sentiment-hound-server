@@ -6,7 +6,7 @@ export class SentimentService {
     constructor(private prisma: PrismaService) { }
 
 
-    async analyzeText(data: string) {
+    async analyzeText(data: string[]) {
         const res = await fetch("http://localhost:8000/analyze/tweet-bulk", {
             method: "POST",
             headers: {
