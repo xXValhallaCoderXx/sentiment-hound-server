@@ -9,6 +9,6 @@ export class SentimentController {
     @UseGuards(JwtAuthGuard)
     @Post('twitter')
     async register(@Body() body) {
-        return this.sentimentService.analyzeText(body.input_text);
+        return this.sentimentService.analyzeText(body.input_text, {});
     }
 }

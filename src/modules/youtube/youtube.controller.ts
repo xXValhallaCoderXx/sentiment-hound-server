@@ -9,6 +9,6 @@ export class YoutubeController {
     // @UseGuards(JwtAuthGuard)
     @Post('analyze')
     async register(@Body() body) {
-        return this.youtubeService.getVideoComments(body.data);
+        return this.youtubeService.getVideoComments(body);
     }
 }

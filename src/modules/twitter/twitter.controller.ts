@@ -9,6 +9,6 @@ export class TwitterController {
     // @UseGuards(JwtAuthGuard)
     @Post('analyze')
     async register(@Body() body) {
-        return this.twitterService.getTweetReplies(body.data);
+        return this.twitterService.getTweetReplies(body);
     }
 }

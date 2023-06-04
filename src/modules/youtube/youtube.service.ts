@@ -15,14 +15,21 @@ export class YoutubeService {
     ) { }
 
 
-    async getVideoComments(tweetId: string): Promise<any> {
+    async getVideoComments(body: any): Promise<any> {
         const apiUrl = "https://www.googleapis.com/youtube/v3";
-        const searchQuery = "test";
         const url = `${apiUrl}/commentThreads?key=${this.configService.get<string>(
             'YOUTUBE_API_KEY',
-        )}&part=snippet,replies&videoId=kgqj-aKcZ8Q`;
+        )}&part=snippet,replies&videoId=${body.videoId}`;
+
+        const videoMetaData = `${apiUrl}/videos?key=${this.configService.get<string>(
+            'YOUTUBE_API_KEY',
+        )}&part=snippet&id=${body.videoId}`;
+
         const videoData = await fetch(url);
         const videoDataResponse = await videoData.json();
+
+        const videoData2 = await fetch(videoMetaData);
+        const videoDataResponse2 = await videoData2.json();
 
         let count = -1;
         const commentMapping = new Set();
@@ -62,15 +69,13 @@ export class YoutubeService {
             }
         });
 
-        // console.log('FLATMAP: ', flatMap)
-        // const sanitizedTweets = conversationResponse.data.map((tweet) => {
-        //     return tweet.text.replace(/@[^ ]+/g, '');
-        // });
-        // console.log('PARSED: ', sanitizedTweets);
-        const sentiment = await this.sentimentService.analyzeText(flatMap)
-        // console.log(sentiment)
-        console.log("COMMENT MAPPING: ", commentMapping)
-        console.log("COMMENTS: ", comments)
-        return comments;
+        const sentiment = await this.sentimentService.analyzeText(flatMap, comments)
+        return {
+            videoDetails: {
+                title: videoDataResponse2.items[0].snippet.title,
+                thumbnail: videoDataResponse2.items[0].snippet.thumbnails.standard.url,
+            },
+            sentiment
+        };
     }
 }
