@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Platform {
+  TWITTER
+  YOUTUBE
+}
+
 model User {
   id    Int     @default(autoincrement()) @id
   email String  @unique
@@ -21,10 +26,13 @@ model User {
 
 model Comment {
   id        Int      @default(autoincrement()) @id
+  commentID String
   author    String
   content   String
   published String
   sentiment String
+  parentComment Bool?
+  platform  Platform? 
   user    User?    @relation(fields: [userId], references: [id])
   userId  Int?
 }

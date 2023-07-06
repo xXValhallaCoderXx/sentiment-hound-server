@@ -20,8 +20,19 @@ export class UserService {
         return user;
     }
 
-    async createUser(data: Prisma.UserCreateInput): Promise<User | undefined> {
-        const newUser = this.prisma.user.create({ data });
+    async createUser(data: any): Promise<User | undefined> {
+        const newUser = this.prisma.user.create({
+            data: {
+                email: data.email,
+                password: data.password,
+                profile: {
+                    create: {
+                        name: data.name,
+                    }
+                }
+            }
+        });
+
         return newUser;
     }
 

@@ -65,12 +65,13 @@ export class AuthService {
                 },
             };
         } catch (err) {
-            if (err.parent.code === PostgresErrorCode.UniqueViolation) {
+            if (err?.code === PostgresErrorCode.UniqueViolation) {
                 throw new HttpException(
                     'User with that email already exists',
                     HttpStatus.BAD_REQUEST,
                 );
             }
+
             throw new HttpException(
                 'Something went wrong',
                 HttpStatus.INTERNAL_SERVER_ERROR,
